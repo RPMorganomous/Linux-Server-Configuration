@@ -29,13 +29,14 @@ session = DBSession()
 
 
 # Create anti-forgery state token
-@app.route('/login')
+@app.route('/')
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
+    bands = session.query(Band).order_by(asc(Band.name))
     # return "The current session state is %s" % login_session['state']
-    return render_template('login.html', STATE=state)
+    return render_template('publicbands.html', STATE=state, bands=bands)
 
 
 @app.route('/fbconnect', methods=['POST'])
@@ -388,8 +389,7 @@ def showAlbums(band_id):
     band = session.query(Band).filter_by(id=band_id).one()
     creator = getUserInfo(band.user_id)
     albums = session.query(AlbumItem).filter_by(band_id=band_id).all()
-    if 'username' not in (
-            login_session or creator.id != login_session['user_id']):
+    if 'username' not in login_session or creator.id != login_session['user_id']:
         return render_template(
             'publicalbums.html',
             albums=albums,
