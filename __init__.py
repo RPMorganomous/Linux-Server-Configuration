@@ -30,7 +30,7 @@ session = DBSession()
 
 # Create anti-forgery state token
 @app.route('/')
-def showLogin():
+def setState():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
@@ -38,6 +38,9 @@ def showLogin():
     # return "The current session state is %s" % login_session['state']
     return render_template('publicbands.html', STATE=state, bands=bands)
 
+@app.route('/login')
+def showLogin():
+    return render_template('login.html')
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
