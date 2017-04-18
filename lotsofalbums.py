@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 from band_database_setup import Band, Base, AlbumItem, User
 
-engine = create_engine('sqlite:///bandalbumswithusers.db')
+engine = create_engine('postgresql://catalog:catalog@localhost/bandalbumswithusers')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
@@ -19,7 +19,7 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-Create dummy user
+# Create dummy user
 User1 = User(
        name="Metal Hunger",
        email="hungry@metal.com",
@@ -487,7 +487,7 @@ albumItem10 = AlbumItem(
        description="It is the only Deep Purple studio record featuring "
        "Tommy Bolin, who replaced Ritchie Blackmore on guitar and is also "
        "the final of three albums to feature Glenn Hughes on bass and "
-       "David Coverdale on lead vocals, before he later left to form "
+       "David Coverdale on lead vocals before he left to form "
        "Whitesnake.",
        price="$19.95",
        era="Swan-Song",

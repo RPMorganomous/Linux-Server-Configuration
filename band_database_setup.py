@@ -48,7 +48,7 @@ class AlbumItem(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
     picture = Column(String(250))
-    year = Column(Integer(4))
+    year = Column(Integer)
 
     @property
     def serialize(self):
@@ -62,7 +62,7 @@ class AlbumItem(Base):
         }
 
 
-engine = create_engine('sqlite:///bandalbumswithusers.db')
+engine = create_engine('postgresql://catalog:catalog@localhost/bandalbumswithusers')
 
 
 Base.metadata.create_all(engine)

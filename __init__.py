@@ -16,12 +16,12 @@ import requests
 app = Flask(__name__)
 
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open('/var/www/CatalogApp/CatalogApp/client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Classic Rock Hall Of Fame"
 
 
 # Connect to Database and create database session
-engine = create_engine('sqlite:///bandalbumswithusers.db')
+engine = create_engine('postgresql://catalog:catalog@localhost/bandalbumswithusers')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -134,7 +134,7 @@ def gconnect():
 
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('/var/www/CatalogApp/CatalogApp/client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -519,4 +519,4 @@ def disconnect():
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
-    app.run(host='0.0.0.0', port=8000)
+    app.run()
